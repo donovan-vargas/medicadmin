@@ -16,8 +16,8 @@ class ClinicaAdmin(admin.ModelAdmin):
     search_fields = ('cclinica', 'cdescripcion', )
     list_filter = ('dtcreacion',)
 
-class MedicoAdmin(admin.ModelAdmin): #validar el campo id_univeridad, ha nombre y mas??
-    list_display = ('usuario', 'ccedula_profesional', 'ccedula_especialidad', 'id_especialidad', 'dtfecha_nacimiento', 'cgenero', 'id_direccion', 'ccorreo', 'id_univeridad', 'itelefono', 'ifijo', 'iext','cdatos_curriculares', 'cespecialidades', 'cfacebook', 'ctwiter','csitio_web', 'ccalle', 'cnum_int', 'cnum_ext', 'ccp', 'id_ubicacion' ,'dtcreacion', 'activo',)
+class MedicoAdmin(admin.ModelAdmin):
+    list_display = ('usuario', 'ccedula_profesional', 'ccedula_especialidad', 'id_especialidad', 'dtfecha_nacimiento', 'cgenero', 'id_direccion', 'ccorreo', 'id_universidad', 'itelefono', 'ifijo', 'iext','cdatos_curriculares', 'cespecialidades', 'cfacebook', 'ctwiter','csitio_web', 'ccalle', 'cnum_int', 'cnum_ext', 'ccp', 'id_ubicacion' ,'dtcreacion', 'activo',)
     search_fields = ('usuario', 'ccedula_profesional', 'ccedula_especialidad', 'dtfecha_nacimiento', 'ccorreo', 'ccalle', 'cnum_int', 'cnum_ext', 'ccp', )
     list_filter = ('dtfecha_nacimiento', 'dtcreacion',)
 
@@ -31,9 +31,9 @@ class ConsultorioAdmin(admin.ModelAdmin):
     search_fields = ('id_clinica', 'cnumero_consultorio', 'cdescipcion', 'idmedico',)
     list_filter = ('dtcreacion',)
 
-class AgendaAdmin(admin.ModelAdmin): #cEstatus
-    list_display = ('id_agenda', 'id_consultorio', 'dtfecha_cita', 'dtfecha_fin_cita', 'id_paciente', 'dtfecha_reprogramada', 'cObservaciones', 'cEstatus', 'itelefono', 'ifijo', 'iext', 'dtcreacion', 'activo',)
-    search_fields = ('id_consultorio', 'dtfecha_cita', 'id_paciente', 'dtfecha_reprogramada', 'cObsevaciones', 'cEstatus',)
+class AgendaAdmin(admin.ModelAdmin):
+    list_display = ('id_agenda', 'id_consultorio', 'dtfecha_cita', 'dtfecha_fin_cita', 'id_paciente', 'dtfecha_reprogramada', 'cobservaciones', 'cestatus', 'itelefono', 'ifijo', 'iext', 'dtcreacion', 'activo',)
+    search_fields = ('id_consultorio', 'dtfecha_cita', 'id_paciente', 'dtfecha_reprogramada', 'cobsevaciones', 'cestatus',)
     list_filter = ('dtfecha_cita', 'dtfecha_fin_cita', 'dtfecha_reprogramada',)
 
 class ConsultaAdmin(admin.ModelAdmin):
@@ -43,8 +43,8 @@ class ConsultaAdmin(admin.ModelAdmin):
 
 
 class RecetaAdmin(admin.ModelAdmin): #id_constulta
-    list_display = ('id_receta', 'id_constulta', 'iorden_medicamento', 'cmedicamento', 'cfrecuencia', 'cperiodo', 'cindicaciones', 'dtcreacion' ,'activo',)
-    search_fields = ('id_receta', 'id_constulta', 'iorden_medicamento', 'cmedicamento',)
+    list_display = ('id_receta', 'id_consulta', 'iorden_medicamento', 'cmedicamento', 'cfrecuencia', 'cperiodo', 'cindicaciones', 'dtcreacion' ,'activo',)
+    search_fields = ('id_receta', 'id_consulta', 'iorden_medicamento', 'cmedicamento',)
     list_filter = ('dtcreacion',)
 
 admin.site.register(Especialidad, EspecialidadAdmin)
