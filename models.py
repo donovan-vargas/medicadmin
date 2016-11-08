@@ -78,7 +78,7 @@ class Medico(models.Model):
                                default=MALE)
     id_direccion = models.IntegerField()
     ccorreo = models.EmailField('Correo')
-    id_univeridad = models.ForeignKey(Universidad,
+    id_universidad = models.ForeignKey(Universidad,
                                       on_delete=models.SET_NULL, null=True,
                                       blank=False)
     itelefono = models.IntegerField('Celular', validators=[
@@ -208,9 +208,9 @@ class Agenda(models.Model):
     id_paciente = models.ForeignKey(Paciente)
     dtfecha_reprogramada = models.DateTimeField('Reprogramacion', blank=True,
                                                 null=True)
-    cObservaciones = models.CharField('Observaciones', max_length=200,
+    cobservaciones = models.CharField('Observaciones', max_length=200,
                                       blank=True, null=True)
-    cEstatus = models.CharField('Estatus', choices=STATUS_CHOICE,
+    cestatus = models.CharField('Estatus', choices=STATUS_CHOICE,
                                 max_length=15, blank=False, null=True)
     itelefono = models.IntegerField('Celular', validators=[
         MaxValueValidator(9999999999), ])
@@ -274,7 +274,7 @@ class Consulta(models.Model):
 
 class Receta(models.Model):
     id_receta = models.AutoField(primary_key=True)
-    id_constulta = models.ForeignKey(Consulta, on_delete=models.CASCADE)
+    id_consulta = models.ForeignKey(Consulta, on_delete=models.CASCADE)
     iorden_medicamento = models.IntegerField('Orden')
     cmedicamento = models.CharField('Medicamento', max_length=200, blank=False,
                                     null=True)
