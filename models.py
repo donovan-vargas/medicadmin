@@ -1,5 +1,5 @@
 # coding=utf-8
-# encode=utf-8
+
 from django.conf import settings
 from django.core.validators import MaxValueValidator
 from django.db import models
@@ -18,7 +18,7 @@ class Especialidad(models.Model):
         verbose_name_plural = 'Especialidades'
 
     def __str__(self):
-        return self.id_especialidad
+        return str(self.id_especialidad)
 
 
 class Universidad(models.Model):
@@ -34,7 +34,7 @@ class Universidad(models.Model):
         verbose_name_plural = 'Universidades'
 
     def __str__(self):
-        return self.id_universidad
+        return str(self.id_universidad)
 
 
 class Clinica(models.Model):
@@ -53,6 +53,12 @@ class Clinica(models.Model):
     id_ubicacion = models.IntegerField()
     dtcreacion = models.DateTimeField('Creación', auto_now=True)
     activo = models.BooleanField(default=True)
+
+    class Meta(object):
+        verbose_name_plural = 'Clinicas'
+
+    def __str__(self):
+        return str(self.id_clinica)
 
 
 class Medico(models.Model):
@@ -112,7 +118,7 @@ class Medico(models.Model):
         verbose_name_plural = 'Medicos'
 
     def __str__(self):
-        return self.user.username
+        return self.usuario.username
 
 
 class Paciente(models.Model):
@@ -158,7 +164,7 @@ class Paciente(models.Model):
         verbose_name_plural = 'Pacientes'
 
     def __str__(self):
-        return self.user.cnombre
+        return str(self.id_paciente)
 
 
 class Consultorio(models.Model):
@@ -187,7 +193,7 @@ class Consultorio(models.Model):
         verbose_name_plural = 'Consultorios'
 
     def __str__(self):
-        return self.id_consultorio
+        return str(self.id_consultorio)
 
 
 class Agenda(models.Model):
@@ -225,7 +231,7 @@ class Agenda(models.Model):
         verbose_name_plural = 'Agendados'
 
     def __str__(self):
-        return self.id_agenda
+        return str(self.id_agenda)
 
 
 class Consulta(models.Model):
@@ -269,7 +275,7 @@ class Consulta(models.Model):
         verbose_name_plural = 'Consultas'
 
     def __str__(self):
-        return self.id_consulta
+        return str(self.id_consulta)
 
 
 class Receta(models.Model):
@@ -291,4 +297,4 @@ class Receta(models.Model):
         verbose_name_plural = 'Recetas'
 
     def __str__(self):
-        return self.id_receta
+        return str(self.id_receta)
