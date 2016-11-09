@@ -6,7 +6,7 @@ from .models import Especialidad, Universidad, Clinica, Medico, Paciente, \
 # Register your models here.
 class EspecialidadAdmin(admin.ModelAdmin):
     list_display = (
-        'id_especialidad', 'cespecialidad', 'cdescripcion', 'dtcreacion',
+        'especialidad', 'cespecialidad', 'cdescripcion', 'dtcreacion',
         'activo',)
     search_fields = ('cespecialidad', 'cdescripcion',)
     list_filter = ('dtcreacion',)
@@ -14,7 +14,7 @@ class EspecialidadAdmin(admin.ModelAdmin):
 
 class UniversidadAdmin(admin.ModelAdmin):
     list_display = (
-        'id_universidad', 'cuniversidad', 'cdescripcion', 'dtcreacion',
+        'universidad', 'cuniversidad', 'cdescripcion', 'dtcreacion',
         'activo',)
     search_fields = ('cuniversidad', 'cdescripcion',)
     list_filter = ('dtcreacion',)
@@ -22,8 +22,8 @@ class UniversidadAdmin(admin.ModelAdmin):
 
 class ClinicaAdmin(admin.ModelAdmin):
     list_display = (
-        'id_clinica', 'cclinica', 'cdescripcion', 'ccalle', 'cnum_int',
-        'cnum_ext', 'ccp', 'id_ubicacion', 'dtcreacion',
+        'clinica', 'cclinica', 'cdescripcion', 'ccalle', 'cnum_int',
+        'cnum_ext', 'ccp', 'ubicacion', 'dtcreacion',
         'activo',)
     search_fields = ('cclinica', 'cdescripcion',)
     list_filter = ('dtcreacion',)
@@ -32,11 +32,11 @@ class ClinicaAdmin(admin.ModelAdmin):
 class MedicoAdmin(admin.ModelAdmin):
     list_display = (
         'usuario', 'ccedula_profesional', 'ccedula_especialidad',
-        'id_especialidad', 'dtfecha_nacimiento', 'cgenero',
-        'id_direccion', 'ccorreo', 'id_universidad', 'itelefono', 'ifijo',
+        'especialidad', 'dtfecha_nacimiento', 'cgenero',
+        'ccorreo', 'universidad', 'itelefono', 'ifijo',
         'iext', 'cdatos_curriculares', 'cespecialidades',
         'cfacebook', 'ctwiter', 'csitio_web', 'ccalle', 'cnum_int', 'cnum_ext',
-        'ccp', 'id_ubicacion', 'dtcreacion',
+        'ccp', 'ubicacion', 'dtcreacion',
         'activo',)
     search_fields = (
         'usuario', 'ccedula_profesional', 'ccedula_especialidad',
@@ -47,10 +47,10 @@ class MedicoAdmin(admin.ModelAdmin):
 
 class PacienteAdmin(admin.ModelAdmin):
     list_display = (
-        'id_paciente', 'cnombre', 'cpaterno', 'cmaterno', 'dtfecha_nacimiento',
+        'paciente', 'cnombre', 'cpaterno', 'cmaterno', 'dtfecha_nacimiento',
         'cgenero', 'ccorreo', 'itelefono', 'ifijo',
         'iext', 'calergias', 'cenfermedades_cronicas', 'ccalle', 'cnum_int',
-        'cnum_ext', 'ccp', 'id_ubicacion',
+        'cnum_ext', 'ccp', 'ubicacion',
         'dtcreacion', 'activo',)
     search_fields = (
         'cnombre', 'cpaterno', 'cmaterno', 'dtfecha_nacimiento', 'calergias',
@@ -60,50 +60,50 @@ class PacienteAdmin(admin.ModelAdmin):
 
 class ConsultorioAdmin(admin.ModelAdmin):
     list_display = (
-        'id_consultorio', 'id_clinica', 'cnumero_consultorio', 'cdescripcion',
-        'id_medico', 'cubicacion', 'cdias_atencion',
+        'consultorio', 'clinica', 'cnumero_consultorio', 'cdescripcion',
+        'medico', 'cubicacion', 'cdias_atencion',
         'chorario_ini', 'chorario_fin', 'iintervalo_consulta', 'dtcreacion',
         'activo',)
     search_fields = (
-        'id_clinica', 'cnumero_consultorio', 'cdescipcion', 'idmedico',)
+        'clinica', 'cnumero_consultorio', 'cdescipcion', 'idmedico',)
     list_filter = ('dtcreacion',)
 
 
 class AgendaAdmin(admin.ModelAdmin):
     list_display = (
-        'id_agenda', 'id_consultorio', 'dtfecha_cita', 'dtfecha_fin_cita',
-        'id_paciente', 'dtfecha_reprogramada',
+        'agenda', 'consultorio', 'dtfecha_cita', 'dtfecha_fin_cita',
+        'paciente', 'dtfecha_reprogramada',
         'cobservaciones', 'cestatus', 'itelefono', 'ifijo', 'iext',
         'dtcreacion', 'activo',)
     search_fields = (
-        'id_consultorio', 'dtfecha_cita', 'id_paciente',
+        'consultorio', 'dtfecha_cita', 'paciente',
         'dtfecha_reprogramada', 'cobsevaciones', 'cestatus',)
     list_filter = ('dtfecha_cita', 'dtfecha_fin_cita', 'dtfecha_reprogramada',)
 
 
 class ConsultaAdmin(admin.ModelAdmin):
     list_display = (
-        'id_consulta', 'id_consultorio', 'dtfecha_consulta',
-        'dtfecha_fin_consulta', 'id_paciente', 'id_medico', 'cestatus',
+        'consulta', 'consultorio', 'dtfecha_consulta',
+        'dtfecha_fin_consulta', 'paciente', 'medico', 'cestatus',
         'dHonorarios', 'cObservaciones', 'cSintomatologia', 'cDiagnostico',
-        'id_cita', 'dtalla', 'dpeso', 'iedad', 'imeses',
+        'cita', 'dtalla', 'dpeso', 'iedad', 'imeses',
         'dtcreacion', 'activo',)
     search_fields = (
-        'id_consulta', 'id_consultorio', 'dtfecha_consulta',
-        'dtfecha_fin_consulta', 'id_paciente', 'id_medico',
+        'consulta', 'consultorio', 'dtfecha_consulta',
+        'dtfecha_fin_consulta', 'paciente', 'medico',
         'cestatus',)
     list_filter = (
         'dtfecha_consulta', 'dtfecha_fin_consulta', 'dtcreacion', 'dpeso',
         'dtalla',)
 
 
-class RecetaAdmin(admin.ModelAdmin):  # id_constulta
+class RecetaAdmin(admin.ModelAdmin):  # constulta
     list_display = (
-        'id_receta', 'id_consulta', 'iorden_medicamento', 'cmedicamento',
+        'receta', 'consulta', 'iorden_medicamento', 'cmedicamento',
         'cfrecuencia', 'cperiodo', 'cindicaciones',
         'dtcreacion', 'activo',)
     search_fields = (
-        'id_receta', 'id_consulta', 'iorden_medicamento', 'cmedicamento',)
+        'receta', 'consulta', 'iorden_medicamento', 'cmedicamento',)
     list_filter = ('dtcreacion',)
 
 

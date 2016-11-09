@@ -1,16 +1,18 @@
 # coding=utf-8
 
-from django.conf import settings
+from django.contrib.auth.models import User
 from django.core.validators import MaxValueValidator
 from django.db import models
+from catalogos.models import Ubicacion
+from medicadmin.choices import *
 
 
 class Especialidad(models.Model):
-    id_especialidad = models.AutoField(primary_key=True)
+    especialidad = models.AutoField(primary_key=True)
     cespecialidad = models.CharField("Especialidad", max_length=50,
                                      blank=False, null=True)
-    cdescripcion = models.CharField("Descripcion", max_length=200, blank=False,
-                                    null=True)
+    cdescripcion = models.CharField("Descripcion", max_length=200,
+                                    blank=False, null=True)
     dtcreacion = models.DateTimeField('Creación', auto_now=True)
     activo = models.BooleanField(default=True)
 
@@ -18,13 +20,13 @@ class Especialidad(models.Model):
         verbose_name_plural = 'Especialidades'
 
     def __str__(self):
-        return str(self.id_especialidad)
+        return self.cespecialidad
 
 
 class Universidad(models.Model):
-    id_universidad = models.AutoField(primary_key=True)
-    cuniversidad = models.CharField('Universidad', max_length=50, blank=False,
-                                    null=True)
+    universidad = models.AutoField(primary_key=True)
+    cuniversidad = models.CharField('Universidad', max_length=50,
+                                    blank=False, null=True)
     cdescripcion = models.CharField('Descripcion', max_length=200, blank=False,
                                     null=True)
     dtcreacion = models.DateTimeField('Creación', auto_now=True)
@@ -34,11 +36,11 @@ class Universidad(models.Model):
         verbose_name_plural = 'Universidades'
 
     def __str__(self):
-        return str(self.id_universidad)
+        return self.cuniversidad
 
 
 class Clinica(models.Model):
-    id_clinica = models.AutoField(primary_key=True)
+    clinica = models.AutoField(primary_key=True)
     cclinica = models.CharField('Clínica', max_length=100, blank=False,
                                 null=True)
     cdescripcion = models.CharField('Descripcion', max_length=200, blank=False,
@@ -50,7 +52,7 @@ class Clinica(models.Model):
                                 null=True)
     ccp = models.CharField('Codigo postal', max_length=10, blank=False,
                            null=True)
-    id_ubicacion = models.IntegerField()
+    ubicacion = models.ForeignKey(Ubicacion)
     dtcreacion = models.DateTimeField('Creación', auto_now=True)
     activo = models.BooleanField(default=True)
 
@@ -62,31 +64,23 @@ class Clinica(models.Model):
 
 
 class Medico(models.Model):
-    MALE = 'M'
-    FEMALE = 'F'
-    SEX_CHOICE = (
-        (MALE, 'Hombre'),
-        (FEMALE, 'Mujer')
-    )
-
-    usuario = models.OneToOneField(settings.AUTH_USER_MODEL)
+    usuario = models.ForeignKey(User, on_delete=models.CASCADE)
     ccedula_profesional = models.CharField('Cédula profesional',
                                            max_length=50, blank=False,
                                            null=True)
     ccedula_especialidad = models.CharField('Cédula especialidad',
-                                            max_length=50, blank=True,
+                                            max_length=50, blank=False,
                                             null=True)
-    id_especialidad = models.ForeignKey("Especialidad",
+    especialidad = models.ForeignKey("Especialidad",
                                         on_delete=models.SET_NULL, null=True,
                                         blank=False)
     dtfecha_nacimiento = models.DateField('Fecha de nacimiento')
     cgenero = models.CharField('Genero', max_length=2, choices=SEX_CHOICE,
                                default=MALE)
-    id_direccion = models.IntegerField()
     ccorreo = models.EmailField('Correo')
-    id_universidad = models.ForeignKey(Universidad,
-                                      on_delete=models.SET_NULL, null=True,
-                                      blank=False)
+    universidad = models.ForeignKey(Universidad,
+                                       on_delete=models.SET_NULL, null=True,
+                                       blank=False)
     itelefono = models.IntegerField('Celular', validators=[
         MaxValueValidator(9999999999), ])
     ifijo = models.IntegerField('Teléfono fijo',
@@ -110,7 +104,10 @@ class Medico(models.Model):
                                 null=True)
     ccp = models.CharField('Codigo postal', max_length=10, blank=False,
                            null=True)
-    id_ubicacion = models.IntegerField()
+    ubicacion = models.ForeignKey(Ubicacion, on_delete=models.SET_NULL, null=True,
+                                       blank=False)
+    photo = models.ImageField("Foto", upload_to='profiles', blank=True,
+                              null=True)
     dtcreacion = models.DateTimeField('Creación', auto_now=True)
     activo = models.BooleanField(default=True)
 
@@ -122,14 +119,7 @@ class Medico(models.Model):
 
 
 class Paciente(models.Model):
-    MALE = 'M'
-    FEMALE = 'F'
-    SEX_CHOICE = (
-        (MALE, 'Hombre'),
-        (FEMALE, 'Mujer')
-    )
-
-    id_paciente = models.AutoField(primary_key=True)
+    paciente = models.AutoField(primary_key=True)
     cnombre = models.CharField('Nombre', max_length=50, blank=False, null=True)
     cpaterno = models.CharField('Apellido paterno', max_length=50, blank=False,
                                 null=True)
@@ -156,7 +146,7 @@ class Paciente(models.Model):
                                 null=True)
     ccp = models.CharField('Codigo postal', max_length=10, blank=False,
                            null=True)
-    id_ubicacion = models.IntegerField()
+    ubicacion = models.IntegerField()
     dtcreacion = models.DateTimeField('Creación', auto_now=True)
     activo = models.BooleanField(default=True)
 
@@ -168,14 +158,14 @@ class Paciente(models.Model):
 
 
 class Consultorio(models.Model):
-    id_consultorio = models.AutoField(primary_key=True)
-    id_clinica = models.IntegerField()
+    consultorio = models.AutoField(primary_key=True)
+    clinica = models.ForeignKey(Clinica)
     cnumero_consultorio = models.CharField('Numero de consultorio',
                                            max_length=10, blank=True,
                                            null=True)
     cdescripcion = models.CharField('Referencia', max_length=200, blank=True,
                                     null=True)
-    id_medico = models.ForeignKey(Medico)
+    medico = models.ForeignKey(Medico)
     cubicacion = models.CharField('Direccion', max_length=200, blank=True,
                                   null=True)
     cdias_atencion = models.CharField('Dias de atención', max_length=200,
@@ -193,25 +183,16 @@ class Consultorio(models.Model):
         verbose_name_plural = 'Consultorios'
 
     def __str__(self):
-        return str(self.id_consultorio)
+        return str(self.consultorio)
 
 
 class Agenda(models.Model):
-    PROGRAMADA = 'P'
-    CURSO = 'C'
-    FINALIZADA = 'F'
-    STATUS_CHOICE = (
-        (PROGRAMADA, 'Programada'),
-        (CURSO, 'En Curso'),
-        (FINALIZADA, 'Finalizada')
-    )
-
-    id_agenda = models.AutoField(primary_key=True)
-    id_consultorio = models.ForeignKey(Consultorio, on_delete=models.CASCADE)
+    agenda = models.AutoField(primary_key=True)
+    consultorio = models.ForeignKey(Consultorio, on_delete=models.CASCADE)
     dtfecha_cita = models.DateTimeField('Fecha cita', blank=False, null=True)
     dtfecha_fin_cita = models.DateTimeField('Fecha fin cita', blank=True,
                                             null=True)
-    id_paciente = models.ForeignKey(Paciente)
+    paciente = models.ForeignKey(Paciente)
     dtfecha_reprogramada = models.DateTimeField('Reprogramacion', blank=True,
                                                 null=True)
     cobservaciones = models.CharField('Observaciones', max_length=200,
@@ -231,25 +212,16 @@ class Agenda(models.Model):
         verbose_name_plural = 'Agendados'
 
     def __str__(self):
-        return str(self.id_agenda)
+        return str(self.agenda)
 
 
 class Consulta(models.Model):
-    PROGRAMADA = 'P'
-    CURSO = 'C'
-    FINALIZADA = 'F'
-    STATUS_CHOICE = (
-        (PROGRAMADA, 'Programada'),
-        (CURSO, 'En Curso'),
-        (FINALIZADA, 'Finalizada')
-    )
-
-    id_consulta = models.AutoField(primary_key=True)
-    id_consultorio = models.ForeignKey(Consultorio, on_delete=models.CASCADE)
+    consulta = models.AutoField(primary_key=True)
+    consultorio = models.ForeignKey(Consultorio, on_delete=models.CASCADE)
     dtfecha_consulta = models.DateTimeField('Fecha consulta')
     dtfecha_fin_consulta = models.DateTimeField('Fecha fin consulta')
-    id_paciente = models.ForeignKey(Paciente, on_delete=models.CASCADE)
-    id_medico = models.ForeignKey(Medico, on_delete=models.CASCADE)
+    paciente = models.ForeignKey(Paciente, on_delete=models.CASCADE)
+    medico = models.ForeignKey(Medico, on_delete=models.CASCADE)
     cestatus = models.CharField('Estatus', choices=STATUS_CHOICE,
                                 max_length=10, blank=True, null=True)
     dHonorarios = models.DecimalField("honorarios", decimal_places=2,
@@ -261,7 +233,7 @@ class Consulta(models.Model):
                                        blank=False, null=True)
     cDiagnostico = models.CharField('Diagnostico', max_length=1000,
                                     blank=False, null=True)
-    id_cita = models.OneToOneField(Agenda, null=True, blank=True)
+    cita = models.OneToOneField(Agenda, null=True, blank=True)
     dtalla = models.DecimalField('Talla', blank=True, null=True,
                                  decimal_places=2, max_digits=3)
     dpeso = models.DecimalField('Peso', decimal_places=2, blank=True,
@@ -275,12 +247,12 @@ class Consulta(models.Model):
         verbose_name_plural = 'Consultas'
 
     def __str__(self):
-        return str(self.id_consulta)
+        return str(self.consulta)
 
 
 class Receta(models.Model):
-    id_receta = models.AutoField(primary_key=True)
-    id_consulta = models.ForeignKey(Consulta, on_delete=models.CASCADE)
+    receta = models.AutoField(primary_key=True)
+    consulta = models.ForeignKey(Consulta, on_delete=models.CASCADE)
     iorden_medicamento = models.IntegerField('Orden')
     cmedicamento = models.CharField('Medicamento', max_length=200, blank=False,
                                     null=True)
@@ -297,4 +269,4 @@ class Receta(models.Model):
         verbose_name_plural = 'Recetas'
 
     def __str__(self):
-        return str(self.id_receta)
+        return str(self.receta)
