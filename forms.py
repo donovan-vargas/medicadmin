@@ -1,7 +1,7 @@
 # coding=utf-8
 from django import forms
 from django.contrib.auth.models import User
-from django.core.validators import MaxValueValidator
+from django.core.validators import MaxValueValidator, MinValueValidator
 
 from medicadmin.choices import *
 from .models import Especialidad, Universidad, Ubicacion
@@ -55,19 +55,25 @@ class MedicoRegistroForm(forms.Form):
     )
     itelefono = forms.IntegerField(
         validators=[
-            MaxValueValidator(9999999999), ],
-        label='Celular',
+            MaxValueValidator(9999999999),
+            MinValueValidator(0000000000),
+        ],
+        label='Telefono',
         widget=forms.NumberInput()
     )
     ifijo = forms.IntegerField(
         validators=[
-            MaxValueValidator(9999999999), ],
+            MaxValueValidator(9999999),
+            MinValueValidator(0000000),
+        ],
         label='Telefono',
         widget=forms.NumberInput()
     )
     iext = forms.IntegerField(
         validators=[
-            MaxValueValidator(99999), ],
+            MaxValueValidator(99999),
+            MinValueValidator(00000),
+        ],
         label='Extencion',
         widget=forms.NumberInput()
     )
