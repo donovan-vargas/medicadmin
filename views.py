@@ -27,8 +27,9 @@ def medico_registro_view(request):
             password = cleaned_data.get('password')
             ccorreo = cleaned_data.get('ccorreo')
             ccedula_especialidad = cleaned_data.get('ccedula_especialidad')
-            id_universidad = cleaned_data.get('id_universidad')
-            id_especialidad = cleaned_data.get('id_especialidad')
+            ccedula_profesional = cleaned_data.get('ccedula_profesional')
+            universidad = cleaned_data.get('universidad')
+            especialidad = cleaned_data.get('especialidad')
             cgenero = cleaned_data.get('cgenero')
             dtfecha_nacimiento = cleaned_data.get('dtfecha_nacimiento')
             itelefono = cleaned_data.get('itelefono')
@@ -38,7 +39,7 @@ def medico_registro_view(request):
             cnum_ext = cleaned_data.get('cnum_ext')
             cnum_int = cleaned_data.get('cnum_int')
             ccp = cleaned_data.get('ccp')
-            id_ubicacion = cleaned_data.get('id_ubicacion')
+            ubicacion = cleaned_data.get('ubicacion')
             photo = cleaned_data.get('photo')
             # instanciamos un objeto User, con el username y password
             user_model = User.objects.create_user(
@@ -56,9 +57,11 @@ def medico_registro_view(request):
             medico = Medico()
             # Al campo usuario le asignamos el objeto user_model
             medico.usuario = user_model
+            medico.ccorreo = ccorreo
             medico.ccedula_especialidad = ccedula_especialidad
-            medico.id_universidad = id_universidad
-            medico.id_especialidad = id_especialidad
+            medico.ccedula_profesional = ccedula_profesional
+            medico.universidad = universidad
+            medico.especialidad = especialidad
             medico.cgenero = cgenero
             medico.dtfecha_nacimiento = dtfecha_nacimiento
             medico.itelefono = itelefono
@@ -68,7 +71,7 @@ def medico_registro_view(request):
             medico.cnum_ext = cnum_ext
             medico.cnum_int = cnum_int
             medico.ccp = ccp
-            medico.id_ubicacion = id_ubicacion
+            medico.ubicacion = ubicacion
             medico.photo = photo
             # Guardamos en db
             medico.save()

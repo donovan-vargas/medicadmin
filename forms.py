@@ -22,18 +22,24 @@ class MedicoRegistroForm(forms.Form):
         label='Correo electrónico',
         widget=forms.EmailInput()
     )
-    ccedula_especialidad = forms.CharField(
+    ccedula_profesional = forms.CharField(
         min_length=12,
         label='Cédula profesional',
         widget=forms.TextInput()
 
     )
-    id_universidad = forms.ModelChoiceField(
+    ccedula_especialidad = forms.CharField(
+        min_length=12,
+        label='Cédula especialidad',
+        widget=forms.TextInput()
+
+    )
+    universidad = forms.ModelChoiceField(
         queryset=Universidad.objects.all().order_by('cuniversidad'),
         label='Universidad',
         widget=forms.Select
     )
-    id_especialidad = forms.ModelChoiceField(
+    especialidad = forms.ModelChoiceField(
         queryset=Especialidad.objects.all().order_by('cespecialidad'),
         label='Especialidad',
         widget=forms.Select
@@ -81,7 +87,7 @@ class MedicoRegistroForm(forms.Form):
         label='Codigo postal',
         widget=forms.TextInput()
     )
-    id_ubicacion = forms.ModelChoiceField(
+    ubicacion = forms.ModelChoiceField(
         queryset=Ubicacion.objects.all().order_by('cdescripcion'),
         label='Ubicacion',
         widget=forms.Select
