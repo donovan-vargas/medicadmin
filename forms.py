@@ -37,12 +37,12 @@ class MedicoRegistroForm(forms.Form):
     universidad = forms.ModelChoiceField(
         queryset=Universidad.objects.all().order_by('cuniversidad'),
         label='Universidad',
-        widget=forms.Select
+        widget=forms.Select()
     )
     especialidad = forms.ModelChoiceField(
         queryset=Especialidad.objects.all().order_by('cespecialidad'),
         label='Especialidad',
-        widget=forms.Select
+        widget=forms.Select()
     )
     cgenero = forms.ChoiceField(
         label='Genero',

@@ -81,7 +81,7 @@ class Medico(models.Model):
     universidad = models.ForeignKey(Universidad,
                                        on_delete=models.SET_NULL, null=True,
                                        blank=False)
-    itelefono = models.IntegerField('Celular', validators=[
+    itelefono = models.BigIntegerField('Celular', validators=[
         MaxValueValidator(9999999999), ])
     ifijo = models.IntegerField('Teléfono fijo',
                                 validators=[MaxValueValidator(9999999999), ])
@@ -129,7 +129,7 @@ class Paciente(models.Model):
     cgenero = models.CharField('Genero', max_length=2, choices=SEX_CHOICE,
                                default=MALE)
     ccorreo = models.EmailField('Correo')
-    itelefono = models.IntegerField('Celular', validators=[
+    itelefono = models.BigIntegerField('Celular', validators=[
         MaxValueValidator(9999999999), ])
     ifijo = models.IntegerField('Teléfono fijo',
                                 validators=[MaxValueValidator(9999999999), ])
@@ -146,7 +146,7 @@ class Paciente(models.Model):
                                 null=True)
     ccp = models.CharField('Codigo postal', max_length=10, blank=False,
                            null=True)
-    ubicacion = models.IntegerField()
+    ubicacion = models.ForeignKey(Ubicacion)
     dtcreacion = models.DateTimeField('Creación', auto_now=True)
     activo = models.BooleanField(default=True)
 
@@ -176,6 +176,10 @@ class Consultorio(models.Model):
                                     blank=False, null=True)
     iintervalo_consulta = models.IntegerField(default=1, blank=False,
                                               null=True)
+    ifijo = models.IntegerField('Teléfono fijo',
+                                validators=[MaxValueValidator(9999999999), ])
+    iext = models.IntegerField('Extencion',
+                               validators=[MaxValueValidator(99999), ])
     dtcreacion = models.DateTimeField('Creación', auto_now=True)
     activo = models.BooleanField(default=True)
 
@@ -199,7 +203,7 @@ class Agenda(models.Model):
                                       blank=True, null=True)
     cestatus = models.CharField('Estatus', choices=STATUS_CHOICE,
                                 max_length=15, blank=False, null=True)
-    itelefono = models.IntegerField('Celular', validators=[
+    itelefono = models.BigIntegerField('Celular', validators=[
         MaxValueValidator(9999999999), ])
     ifijo = models.IntegerField('Teléfono fijo',
                                 validators=[MaxValueValidator(9999999999), ])
