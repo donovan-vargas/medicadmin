@@ -60,7 +60,7 @@ class Clinica(models.Model):
         verbose_name_plural = 'Clinicas'
 
     def __str__(self):
-        return str(self.id_clinica)
+        return str(self.clinica)
 
 
 class Medico(models.Model):
