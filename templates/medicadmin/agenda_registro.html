@@ -1,4 +1,4 @@
-{% extends "admin/base.html" %}
+{% extends "medicadmin/base.html" %}
 
 {% block title %}Registrar Cita {% endblock title %}
 
@@ -12,8 +12,10 @@
     {% else %}
         {% if query %}
             {% for obj in query %}
-                <ul><li>{{ obj.cnumero_consultorio }}</li></ul>
+                <ul><li>Consultorio {{ obj.cnumero_consultorio }} {{ obj.cdescripcion }}</li></ul>
             {% endfor %}
+            <input type="text" id="fecha" name="nfecha"  placeholder="Busca por fecha" readonly="">
+            <button type="submit">Citas del día</button>
         {% endif %}
     {% endif %}
 {% endblock content %}
