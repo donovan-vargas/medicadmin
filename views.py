@@ -1,11 +1,78 @@
 # coding=utf-8
+from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.models import User
 from django.core.urlresolvers import reverse
 from django.shortcuts import redirect
 from django.shortcuts import render
-
-from .forms import MedicoRegistroForm
+from django.contrib import messages
+from django.contrib.auth.decorators import login_required
+from .forms import MedicoRegistroForm, MedicoExtrasForm
 from .models import Medico
+
+
+@login_required
+def dashboard_view(request):
+    if request.method =='POST':
+        form = MedicoExtrasForm(request.POST)
+        if form.is_valid():
+            clean_data = form.cleaned_data
+            cdatos_curriculares = clean_data.get('cdatos_curriculares')
+            cfacebook = clean_data.get('cfacebook')
+            ctwiter = clean_data.get('ctwiter')
+            csitio_web = clean_data.get('csitio_web')
+            Medico.objects.filter(ccorreo=request.user.get_username()).update(
+                cdatos_curriculares=cdatos_curriculares,
+                cfacebook=cfacebook,
+                ctwiter=ctwiter,
+                csitio_web=csitio_web
+            )
+            messages.success(request, 'Datos actualizados con exito')
+            return redirect(reverse('medicadmin.medico_dashboard'))
+    else:
+        data = {}
+        form = None
+        medico = Medico.objects.get(usuario=request.user)
+        if medico.cdatos_curriculares is not None:
+            data['cdatos_curriculares'] = medico.cdatos_curriculares
+        if medico.cfacebook is not None:
+            data['cfacebook'] = medico.cfacebook
+        if medico.ctwiter is not None:
+            data['ctwiter'] = medico.ctwiter
+        if medico.csitio_web is not None:
+            data['csitio_web'] = medico.csitio_web
+        if data is not None:
+            form = MedicoExtrasForm(initial=data)
+    return render(request, 'medicadmin/medico_dashboard.html', {'form':form})
+
+
+def login_view(request):
+    """validar acceso de usuarios"""
+    if request.user.is_authenticated():
+        return redirect(reverse('medicadmin.medico_dashboard'))
+
+    mensaje = ''
+    if request.method == 'POST':
+        username = request.POST.get('username')
+        password = request.POST.get('password')
+        user = authenticate(username=username, password=password)
+        if user is not None:
+            if user.is_active:
+                login(request, user)
+                return redirect(reverse('medicadmin.medico_dashboard'))
+            else:
+                # direccionar informando que la cuenta esta inactiva
+                mensaje = 'La cuenta se encuentra inactiva'
+                return render(request, 'medicadmin/login.html',
+                              {'mensaje': mensaje})
+        mensaje = 'Nombre de usuario o contraseña no valido'
+    return render(request, 'medicadmin/login.html', {'mensaje': mensaje})
+
+
+def logout_view(request):
+    """Desconecta de la aplicación"""
+    logout(request)
+    messages.success(request, 'Te has desconectado.')
+    return redirect(reverse('medicadmin.login'))
 
 
 def medico_registro_view(request):
@@ -76,7 +143,7 @@ def medico_registro_view(request):
             # Guardamos en db
             medico.save()
             return redirect(reverse('medicadmin.gracias',
-                            kwargs={'username': username}))
+                                    kwargs={'username': username}))
     else:
         # si el método es GET, instanciamos un objeto RegistroMedicoForm vacio
         form = MedicoRegistroForm()

@@ -133,3 +133,25 @@ class MedicoRegistroForm(forms.Form):
         if password != password2:
             raise forms.ValidationError('Los passwords no coinciden')
         return password2
+
+class MedicoExtrasForm(forms.Form):
+    cdatos_curriculares = forms.CharField(
+        required=False,
+        label='Datos Curriculares',
+        widget=forms.Textarea(),
+    )
+    cfacebook = forms.CharField(
+        required=False,
+        label='Facebook',
+        widget=forms.TextInput()
+    )
+    ctwiter = forms.CharField(
+        required=False,
+        label='Twiter',
+        widget=forms.TextInput()
+    )
+    csitio_web = forms.CharField(
+        required=False,
+        label='Sitio web',
+        widget=forms.TextInput()
+    )

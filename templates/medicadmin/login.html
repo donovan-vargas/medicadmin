@@ -1,0 +1,22 @@
+{% extends 'admin/base.html' %}
+
+{% block title %}Login {% endblock title %}
+
+{% block content %}
+    {% if mensaje %}
+        {{ mensaje }}
+    {% endif %}
+
+    <form method="post" action="" class="">
+                {% csrf_token %}
+                <div class="input-group">
+                    <input type="text" placeholder="Usuario" id="username" name="username" class="form-control" value="{{ username }}">
+                </div><br>
+
+                <div class="input-group">
+                    <input type="password" placeholder="Contraseña" name="password" id="password" class="form-control">
+                </div><br>
+                <button type="submit" class=""> Iniciar sesión</button>
+                <a class="" href="{% url 'medicadmin.medico_registro' %}"> Registrarme </a>
+            </form>
+{% endblock content %}

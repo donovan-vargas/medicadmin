@@ -1,0 +1,15 @@
+{% extends 'admin/base.html' %}
+
+{% block title %}Medico Dashboard {% endblock title %}
+
+{% block content %}
+    {% if form %}
+        <form method="post" action="" enctype="">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button type="submit">Guardar</button>
+        </form>
+    {% endif %}
+    <a class="" href="{% url 'medicadmin.logout' %}"> Logout </a>
+    {{ user.username }}
+{% endblock content %}
